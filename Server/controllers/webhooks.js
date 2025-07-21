@@ -85,21 +85,23 @@ export const clerkWebhooks = async (req, res) => {
 
       case "user.updated": {
         const updatedData = {
-          email: data.email_addresses[0].email,
-          name: `${data.first_name} ${data.last_name}`,
+          email: data.email_addresses[0].email_addresses,
+          name: data.first_name+ " " + data.last_name,
           imageUrl: data.image_url,
         };
 
         await User.findByIdAndUpdate(data.id, updatedData, { new: true });
-        console.log("User updated:", updatedData);
-        res.status(200).json({ success: true });
+        // console.log("User updated:", updatedData);
+        // res.status(200).json({ success: true });
+        res.json({})
         break;
       }
 
       case "user.deleted": {
         await User.findByIdAndDelete(data.id);
-        console.log("User deleted:", data.id);
-        res.status(200).json({ success: true });
+        // console.log("User deleted:", data.id);
+        // res.status(200).json({ success: true });
+        res.json({})
         break;
       }
 
@@ -109,7 +111,8 @@ export const clerkWebhooks = async (req, res) => {
         break;
     }
   } catch (error) {
-    console.error("Webhook error:", error.message);
-    res.status(400).json({ success: false, message: error.message });
+    // console.error("Webhook error:", error.message);
+    // res.status(400).json({ success: false, message: error.message });
+    res.json({success:false , message:error.message})
   }
 };
